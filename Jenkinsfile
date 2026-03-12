@@ -1,5 +1,5 @@
 pipeline {
-    agent {{{{{{{{{{{{ node { label 'maven' } }
+    agent { node { label 'maven' } }
 
     stages {
 
@@ -22,6 +22,16 @@ pipeline {
                   -u "$QUAY_USR" \
                   -p "$QUAY_PSW" \
                   -r do400-monitoring-lab
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                ./scripts/redeploy.sh \
+                  -d calculator \
+                  -n iepykz-monitoring-lab
                 '''
             }
         }
