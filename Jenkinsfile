@@ -1,5 +1,5 @@
 pipeline {
-    agent { node { label 'maven' } }
+    agent {{{{{{{{{{{{ node { label 'maven' } }
 
     stages {
 
@@ -14,10 +14,8 @@ pipeline {
                 QUAY = credentials('MONITORING_LAB_QUAY_CREDENTIALS')
             }
             steps {
-                // Add Quarkus container extensions
                 sh './scripts/include-container-extensions.sh'
 
-                // Package app, build image, and push to Quay
                 sh '''
                 ./scripts/build-and-push-image.sh \
                   -b $BUILD_NUMBER \
@@ -28,5 +26,13 @@ pipeline {
             }
         }
 
+    }
+
+    post {
+        failure {
+            mail to: "team@example.com",
+                 subject: "Pipeline failed: ${currentBuild.fullDisplayName}",
+                 body: "The following pipeline failed: ${env.BUILD_URL}"
+        }
     }
 }
